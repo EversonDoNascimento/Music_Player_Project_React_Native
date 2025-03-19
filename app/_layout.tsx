@@ -1,9 +1,12 @@
 import { Text, View } from "react-native";
+import { Stack } from "expo-router";
 import "../globals.css";
-export default function Layout() {
+export default function RootLayout() {
   return (
-    <View>
-      <Text className="text-2xl bg-red-700">Layout a</Text>
-    </View>
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="index" />
+      <Stack.Screen name="player" />
+      <Stack.Screen name="config" />
+    </Stack>
   );
 }

@@ -5,8 +5,7 @@ export default function RootLayout() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="index" />
-      <Stack.Screen name="player" />
-      <Stack.Screen name="config" />
+      <Stack.Screen name="(tabs)" />
     </Stack>
   );
 }

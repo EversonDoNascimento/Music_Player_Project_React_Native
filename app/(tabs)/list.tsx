@@ -1,10 +1,10 @@
 import { FlatList, Text, View } from "react-native";
-import { MUSIC_LIST } from "../CONSTANTES/musicList";
-import CardMusic from "../components/CardMusic";
+import { MUSIC_LIST } from "../../CONSTANTES/musicList";
+import CardMusic from "../../components/CardMusic";
 
 export default function Screen() {
   return (
-    <View className="w-full h-full bg-[#1d202c] p-4">
+    <View className="w-full h-full bg-[#1d202c] p-4 relative">
       <FlatList
         data={MUSIC_LIST}
         renderItem={({ item }) => <CardMusic data={item}></CardMusic>}

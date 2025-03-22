@@ -2,7 +2,6 @@ import { Text, View } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faMusic } from "@fortawesome/free-solid-svg-icons";
 import { useEffect } from "react";
-
 import { router } from "expo-router";
 
 export default function Screen() {

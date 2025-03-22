@@ -1,8 +1,19 @@
 import { Tabs } from "expo-router";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+
 export default function TabLayout() {
   return (
-    <Tabs>
+    <Tabs
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {
+          backgroundColor: "#12141b",
+          borderTopWidth: 0,
+          padding: 20,
+        },
+        tabBarActiveTintColor: "#ffd93d",
+      }}
+    >
       <Tabs.Screen
         name="list"
         options={{

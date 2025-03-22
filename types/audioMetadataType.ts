@@ -37,5 +37,6 @@ export type AudioMetadataType = {
 
 export type AudioWithMetadata = {
   asset: MediaLibrary.Asset;
-  metadata: any;
+  metadata: AudioMetadataType | null;
+  albumCover?: string | null;
 };

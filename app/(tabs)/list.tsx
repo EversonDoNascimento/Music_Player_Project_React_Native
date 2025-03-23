@@ -7,6 +7,7 @@ import { musicType } from "../../types/musicType";
 import { useEffect, useState } from "react";
 import getMusicFiles from "../../utils/listMusicFiles";
 import { useAlbum } from "../../contexts/AlbumContext";
+import CardAlbum from "../../components/CardAlbum";
 
 export default function Screen() {
   const [listAudio, setListAudio] = useState([]);
@@ -17,13 +18,21 @@ export default function Screen() {
   return (
     <View className="w-full h-full bg-[#1d202c] p-4 relative">
       {list.loading && <Text>Loading</Text>}
-      {!list.loading &&
-        albuns.length > 0 &&
-        albuns.map((album) => <Text key={album.id}>{album.artist}</Text>)}
-      <FlatList
+
+      {/* <FlatList
         data={list.audioFiles}
         renderItem={({ item }) => <CardMusic data={item}></CardMusic>}
         // keyExtractor={(item) => item.asset.
+      ></FlatList> */}
+      <FlatList
+        data={albuns}
+        renderItem={({ item }) => <CardAlbum data={item}></CardAlbum>}
+        keyExtractor={(item) => item.id}
+        numColumns={2}
+        columnWrapperStyle={{
+          justifyContent: "space-between",
+          marginBottom: 10,
+        }}
       ></FlatList>
     </View>
   );

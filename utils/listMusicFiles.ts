@@ -2,11 +2,14 @@ import * as MediaLibrary from "expo-media-library";
 import { useEffect, useState } from "react";
 import getMetadata from "./getMetadata";
 import { AudioWithMetadata } from "../types/audioMetadataType";
+import { useAlbum } from "../contexts/AlbumContext";
+import { musicType } from "../types/musicType";
+import { AlbumType } from "../types/albumType";
 
 export default function useMusicFiles() {
   const [audioFiles, setAudioFiles] = useState<AudioWithMetadata[]>([]);
   const [loading, setLoading] = useState(true);
-
+  const { albuns, setAlbum } = useAlbum();
   useEffect(() => {
     async function getMusicFiles() {
       const { status } = await MediaLibrary.requestPermissionsAsync();
@@ -36,12 +39,31 @@ export default function useMusicFiles() {
             ).toString("base64")}`;
             albumCoverUri = base64String;
           }
-
-          filesWithMetadata.push({
+          const file: AudioWithMetadata = {
             asset,
-            metadata,
-            albumCover: albumCoverUri, // 👈 adiciona aqui a URI da capa
-          });
+            metadata: null,
+            albumCover: albumCoverUri,
+          };
+          filesWithMetadata.push(file);
+
+          const albumId =
+            asset.albumId || metadata?.common.album || "Desconhecido";
+          const exists = albuns.some(
+            (album: AlbumType) => album.id === albumId
+          );
+
+          if (!exists) {
+            const newAlbum: AlbumType = {
+              id: albumId,
+              title: metadata?.common.album || "Desconhecido",
+              cover: albumCoverUri || "",
+              artist: metadata?.common.artist || "Desconhecido",
+              year: metadata?.common.year || 0,
+              genre: metadata?.common.genre || [],
+              tracks: [],
+            };
+            setAlbum(newAlbum);
+          }
         } catch (err) {
           console.warn(`Erro ao obter metadados de ${asset.filename}:`, err);
 
@@ -56,7 +78,6 @@ export default function useMusicFiles() {
       setAudioFiles(filesWithMetadata);
       setLoading(false);
     }
-
     getMusicFiles();
   }, []);
 

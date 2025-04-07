@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 import getMetadata from "./getMetadata";
 import { AudioWithMetadata } from "../types/audioMetadataType";
 import { useAlbum } from "../contexts/AlbumContext";
-import { musicType } from "../types/musicType";
 import { AlbumType } from "../types/albumType";
+import { getAlbumCover } from "./getAlbumCover";
 
 export default function useMusicFiles() {
-  const [audioFiles, setAudioFiles] = useState<AudioWithMetadata[]>([]);
+  const [audioFiles, setAudioFiles] = useState<AlbumType[]>([]);
   const [loading, setLoading] = useState(true);
   const { albuns, setAlbum } = useAlbum();
   useEffect(() => {
@@ -21,51 +21,50 @@ export default function useMusicFiles() {
 
       const media = await MediaLibrary.getAssetsAsync({
         mediaType: "audio",
-        first: 60,
+        album: undefined,
+        first: 11,
       });
 
       const filesWithMetadata: AudioWithMetadata[] = [];
-
+      const audioFiles: AlbumType[] = [];
       for (const asset of media.assets) {
         try {
           const metadata = await getMetadata(asset.uri);
 
-          let albumCoverUri: string | null = null;
-
-          if (metadata?.common?.picture?.length) {
-            const picture = metadata.common.picture[0];
-            const base64String = `data:${picture.format};base64,${Buffer.from(
-              picture.data
-            ).toString("base64")}`;
-            albumCoverUri = base64String;
-          }
-          const file: AudioWithMetadata = {
-            asset,
-            metadata: null,
-            albumCover: albumCoverUri,
-          };
-          filesWithMetadata.push(file);
-
-          const albumId =
-            asset.albumId || metadata?.common.album || "Desconhecido";
-          const exists = albuns.some(
-            (album: AlbumType) => album.id === albumId
-          );
-
-          if (!exists) {
-            const newAlbum: AlbumType = {
-              id: albumId,
+          const albumCoverUri = getAlbumCover(metadata);
+          if (!audioFiles.some((a) => a.id === asset.albumId)) {
+            audioFiles.push({
+              id: asset.albumId as string,
               title: metadata?.common.album || "Desconhecido",
               cover: albumCoverUri || "",
               artist: metadata?.common.artist || "Desconhecido",
               year: metadata?.common.year || 0,
               genre: metadata?.common.genre || [],
               tracks: [],
-            };
-            setAlbum(newAlbum);
+            });
           }
+
+          audioFiles.map((a) => {
+            if (a.id === asset.albumId) {
+              a.tracks.push({
+                albumId: asset.albumId as string,
+                creationTime: asset.creationTime,
+                duration: asset.duration,
+                filename: asset.filename,
+                height: asset.height,
+                id: asset.id,
+                mediaType: asset.mediaType,
+                modificationTime: asset.modificationTime,
+                uri: asset.uri,
+                width: asset.width,
+              });
+            }
+          });
+
+          console.log(audioFiles);
+          // setAlbum(audioFiles[0]);
         } catch (err) {
-          console.warn(`Erro ao obter metadados de ${asset.filename}:`, err);
+          // console.warn(`Erro ao obter metadados de ${asset.filename}:`, err);
 
           filesWithMetadata.push({
             asset,
@@ -75,10 +74,14 @@ export default function useMusicFiles() {
         }
       }
 
-      setAudioFiles(filesWithMetadata);
+      audioFiles.map((a) => {
+        setAlbum(a);
+      });
+      setAudioFiles(audioFiles);
       setLoading(false);
     }
     getMusicFiles();
+    console.log(albuns);
   }, []);
 
   return { audioFiles, loading };

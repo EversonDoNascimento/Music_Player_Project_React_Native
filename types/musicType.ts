@@ -9,3 +9,16 @@ export type musicType = {
   creationTime?: number; // Timestamp de criação do arquivo
   modificationTime?: number; // Timestamp da última modificação
 };
+
+export type AudioFile = {
+  albumId: string;
+  creationTime: number;
+  duration: number;
+  filename: string;
+  height: number;
+  id: string;
+  mediaType: string;
+  modificationTime: number;
+  uri: string;
+  width: number;
+};

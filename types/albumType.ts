@@ -1,4 +1,4 @@
-import { AudioWithMetadata } from "./audioMetadataType";
+import { AudioFile } from "./musicType";
 
 export type AlbumType = {
   id: string;
@@ -7,5 +7,5 @@ export type AlbumType = {
   artist: string;
   year: number;
   genre: string[];
-  tracks: AudioWithMetadata[];
+  tracks: AudioFile[];
 };

@@ -15,7 +15,7 @@ export default function CardMusic({ data, album }: Props) {
   return (
     <Pressable
       onPress={() => {
-        alert(data.albumId);
+        console.log(data.uri);
       }}
       className=" flex w-full flex-row items-center  gap-5 mb-4 p-4 border-b-slate-600 border-b-[1px]"
     >

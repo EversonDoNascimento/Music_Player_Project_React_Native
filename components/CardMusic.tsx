@@ -6,16 +6,24 @@ import { faCompactDisc } from "@fortawesome/free-solid-svg-icons";
 import { faClock } from "@fortawesome/free-solid-svg-icons";
 import formatDuration from "../utils/formatDurationMusic";
 import { AlbumType } from "../types/albumType";
+import { useCurrentAlbumPlayProvider } from "../contexts/CurrentAlbumPlay";
+import { useRouter } from "expo-router";
 
 type Props = {
   data: AudioFile;
   album: AlbumType | undefined;
 };
 export default function CardMusic({ data, album }: Props) {
+  const ctxCurrentAlbum = useCurrentAlbumPlayProvider();
+  const router = useRouter();
   return (
     <Pressable
       onPress={() => {
-        console.log(data.uri);
+        const albumConverted = JSON.parse(JSON.stringify(album));
+        if (!album) return null;
+        ctxCurrentAlbum.setCurrentMusic(data);
+        console.log(ctxCurrentAlbum.album);
+        router.push("/player");
       }}
       className=" flex w-full flex-row items-center  gap-5 mb-4 p-4 border-b-slate-600 border-b-[1px]"
     >

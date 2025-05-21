@@ -3,16 +3,20 @@ import { AlbumType } from "../types/albumType";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faMusic } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "expo-router";
+import { useCurrentAlbumPlayProvider } from "../contexts/CurrentAlbumPlay";
 
 type Props = {
   data: AlbumType;
 };
 export default function CardAlbum({ data }: Props) {
   const navigation = useRouter();
+  const ctxCurrentAlbum = useCurrentAlbumPlayProvider();
+
   return (
     <Pressable
       onPress={() => {
         navigation.push(`listSongs/${data.id}`);
+        ctxCurrentAlbum.setAlbum(data);
       }}
       className="flex flex-col items-center gap-4 justify-center bg-[#12141b] rounded-md p-4"
     >

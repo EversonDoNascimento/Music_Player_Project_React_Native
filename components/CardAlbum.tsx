@@ -10,13 +10,11 @@ type Props = {
 };
 export default function CardAlbum({ data }: Props) {
   const navigation = useRouter();
-  const ctxCurrentAlbum = useCurrentAlbumPlayProvider();
 
   return (
     <Pressable
       onPress={() => {
         navigation.push(`listSongs/${data.id}`);
-        ctxCurrentAlbum.setAlbum(data);
       }}
       className="flex flex-col items-center gap-4 justify-center bg-[#12141b] rounded-md p-4"
     >

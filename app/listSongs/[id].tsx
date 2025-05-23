@@ -6,6 +6,7 @@ import { AlbumType } from "../../types/albumType";
 import { getSavedSongs } from "../../utils/saveSongs";
 import { AudioFile } from "../../types/musicType";
 import Header from "../../components/Header";
+import CardPlayer from "../../components/CardPlayer";
 
 const Screen = () => {
   const { id } = useLocalSearchParams();
@@ -27,16 +28,20 @@ const Screen = () => {
     }, [])
   );
   return (
-    <View className="w-full h-full bg-[#1d202c] p-4 relative">
-      <Header></Header>
-      <FlatList
-        data={songs}
-        renderItem={({ item }) => (
-          <CardMusic data={item} album={album}></CardMusic>
-        )}
-        keyExtractor={(item) => item.id}
-      ></FlatList>
-    </View>
+    <>
+      <CardPlayer></CardPlayer>
+      <View className="w-full h-full bg-[#1d202c] p-4 relative">
+        <Header></Header>
+
+        <FlatList
+          data={songs}
+          renderItem={({ item }) => (
+            <CardMusic data={item} album={album}></CardMusic>
+          )}
+          keyExtractor={(item) => item.id}
+        ></FlatList>
+      </View>
+    </>
   );
 };
 

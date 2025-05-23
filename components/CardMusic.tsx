@@ -21,8 +21,8 @@ export default function CardMusic({ data, album }: Props) {
       onPress={() => {
         const albumConverted = JSON.parse(JSON.stringify(album));
         if (!album) return null;
-        ctxCurrentAlbum.setCurrentMusic(data);
-        console.log(ctxCurrentAlbum.album);
+        ctxCurrentAlbum.setMusic(data);
+        ctxCurrentAlbum.setAlbum(album);
         router.push("/player");
       }}
       className=" flex w-full flex-row items-center  gap-5 mb-4 p-4 border-b-slate-600 border-b-[1px]"

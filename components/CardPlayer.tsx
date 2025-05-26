@@ -14,6 +14,8 @@ const CardPlayer = () => {
     isPlaying,
     currentPosition,
     progress,
+    nextSound,
+    prevSound,
   } = useCurrentAlbumPlayProvider();
   const animatedProgressStyle = useAnimatedStyle(() => {
     return {
@@ -36,7 +38,9 @@ const CardPlayer = () => {
           <Text className="text-white">{currentMusic?.filename}</Text>
           <Text className="text-white/50 text-sm">{album?.title}</Text>
           <View className="flex-row items-center justify-center gap-5 w-full mt-2 ">
-            <FontAwesome name="backward" size={24} color="white" />
+            <Pressable onPress={prevSound}>
+              <FontAwesome name="backward" size={24} color="white" />
+            </Pressable>
             {isPlaying ? (
               <Pressable onPress={pauseSound}>
                 <FontAwesome
@@ -56,7 +60,9 @@ const CardPlayer = () => {
                 />
               </Pressable>
             )}
-            <FontAwesome name="forward" size={24} color="white" />
+            <Pressable onPress={nextSound}>
+              <FontAwesome name="forward" size={24} color="white" />
+            </Pressable>
           </View>
         </View>
       </View>

@@ -14,6 +14,8 @@ export default function Screen() {
     isPlaying,
     currentPosition,
     progress,
+    nextSound,
+    prevSound,
   } = useCurrentAlbumPlayProvider();
 
   function formatMillis(millis: number): string {
@@ -78,7 +80,9 @@ export default function Screen() {
       {/* Controles */}
       <View>
         <View className="flex-row gap-11 justify-center items-center mt-8">
-          <FontAwesome name="backward" size={25} color="white" />
+          <Pressable onPress={prevSound}>
+            <FontAwesome name="backward" size={25} color="white" />
+          </Pressable>
           {!isPlaying ? (
             <Pressable
               className="justify-center items-center bg-black/25 rounded-full w-24 h-24"
@@ -94,7 +98,9 @@ export default function Screen() {
               <FontAwesome name="pause" size={35} color="white" />
             </Pressable>
           )}
-          <FontAwesome name="forward" size={25} color="white" />
+          <Pressable onPress={nextSound}>
+            <FontAwesome name="forward" size={25} color="white" />
+          </Pressable>
         </View>
       </View>
     </View>

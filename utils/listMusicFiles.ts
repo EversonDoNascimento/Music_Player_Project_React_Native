@@ -20,7 +20,7 @@ export default function useMusicFiles() {
     const media = await MediaLibrary.getAssetsAsync({
       mediaType: "audio",
       album: undefined,
-      first: 20,
+      first: 50,
     });
 
     const filesWithMetadata: AudioWithMetadata[] = [];

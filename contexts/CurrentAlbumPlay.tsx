@@ -23,6 +23,8 @@ interface AlbumContextType {
   setAlbum: (album: AlbumType) => void;
   playSound: () => void;
   pauseSound: () => void;
+  nextSound: () => void;
+  prevSound: () => void;
   isPlaying: boolean;
   currentPosition: number;
   duration: number | undefined;
@@ -49,7 +51,11 @@ export const CurrentAlbumPlayProvider = ({
 
   async function playSound() {
     if (!sound) return;
+    // album?.tracks.map((track, index) => {
+    //   if (track.id === currentMusic?.id) {
 
+    //   }
+    // });
     const status = await sound.getStatusAsync();
     if (status.isLoaded && !status.isPlaying) {
       await sound.playAsync();
@@ -96,6 +102,28 @@ export const CurrentAlbumPlayProvider = ({
       await sound.pauseAsync();
       setIsPlaying(false);
     }
+  }
+
+  function nextSound() {
+    const currentIndex = album?.tracks.findIndex(
+      (track) => track.id === currentMusic?.id
+    );
+    if (currentIndex === undefined) return;
+
+    const nextMusic = album?.tracks[currentIndex + 1];
+    if (!nextMusic) return;
+    setMusic(album?.tracks[currentIndex + 1]);
+  }
+
+  function prevSound() {
+    const currentIndex = album?.tracks.findIndex(
+      (track) => track.id === currentMusic?.id
+    );
+    if (!currentIndex || currentIndex === undefined) return;
+
+    const previousMusic = album?.tracks[currentIndex - 1];
+    if (!previousMusic) return;
+    setMusic(previousMusic);
   }
 
   useEffect(() => {
@@ -145,6 +173,8 @@ export const CurrentAlbumPlayProvider = ({
         currentPosition,
         duration,
         progress,
+        nextSound,
+        prevSound,
       }}
     >
       {children}
